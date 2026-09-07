@@ -5,6 +5,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
 
 @Entity
 @Table(name = "users")
@@ -14,8 +18,13 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Username cannot be empty")
     private String username;
+    @NotBlank(message = "Password cannot be empty")
+    @Size(min = 6, message = "Password myst be atleast 6 characters")
     private String password;
+    @NotBlank(message = "Role cannot be empty")
+    @Pattern(regexp ="USER|ADMIN", message = "Role must be USER or ADMIN")
     private String role;
 
     // Getter and Setter for id
