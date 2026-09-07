@@ -20,9 +20,11 @@ public class User {
 
     @NotBlank(message = "Username cannot be empty")
     private String username;
+
     @NotBlank(message = "Password cannot be empty")
     @Size(min = 6, message = "Password myst be atleast 6 characters")
     private String password;
+
     @NotBlank(message = "Role cannot be empty")
     @Pattern(regexp ="USER|ADMIN", message = "Role must be USER or ADMIN")
     private String role;

@@ -1,5 +1,7 @@
 package org.example.service;
 
+import org.example.dto.UserRequest;
+import org.example.dto.UserResponse;
 import org.example.exception.UserNotFoundException;
 import org.example.model.User;
 import org.example.repository.UserRepository;
@@ -14,35 +16,57 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User saveUser(User user){
-        return userRepository.save(user);
+    public UserResponse saveUser(UserRequest request){
+        User user = new User();
+        user.setUsername(request.getUsername());
+        user.setPassword(request.getPassword());
+        user.setRole(request.getRole());
+
+        User savedUser = userRepository.save(user);
+        return new UserResponse(savedUser.getId(), savedUser.getUsername(), savedUser.getRole());
     }
 
-    public List<User> getAllUsers(){
-        return userRepository.findAll();
+    public List<UserResponse> getAllUsers(){
+        return userRepository.findAll()
+                .stream()
+                .map(user -> new UserResponse(
+                        user.getId(),
+                        user.getUsername(),
+                        user.getRole()
+                ))
+                .toList();
     }
 
-    public User getUserById(Long id){
-        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User Not Found with id "+ id));
+    public UserResponse getUserById(Long id){
+        User user =  userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User Not Found with id "+ id));
+        return new UserResponse(user.getId(), user.getUsername(), user.getRole());
+
     }
 
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
 
-    public User updateUser(Long id, User updatedUser) {
+    public UserResponse updateUser(Long id, UserRequest request) {
 
-        User existingUser = userRepository.findById(id).orElse(null);
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() ->
+                        new UserNotFoundException(
+                                "User Not Found with id " + id
+                        )
+                );
 
-        if (existingUser == null) {
-            return null;
-        }
+        existingUser.setUsername(request.getUsername());
+        existingUser.setPassword(request.getPassword());
+        existingUser.setRole(request.getRole());
 
-        existingUser.setUsername(updatedUser.getUsername());
-        existingUser.setPassword(updatedUser.getPassword());
-        existingUser.setRole(updatedUser.getRole());
+        User savedUser = userRepository.save(existingUser);
 
-        return userRepository.save(existingUser);
+        return new UserResponse(
+                savedUser.getId(),
+                savedUser.getUsername(),
+                savedUser.getRole()
+        );
     }
 
 
