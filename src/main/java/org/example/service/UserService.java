@@ -1,25 +1,28 @@
 package org.example.service;
-
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.example.dto.UserRequest;
 import org.example.dto.UserResponse;
 import org.example.exception.UserNotFoundException;
 import org.example.model.User;
 import org.example.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository){
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder){
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public UserResponse saveUser(UserRequest request){
         User user = new User();
         user.setUsername(request.getUsername());
-        user.setPassword(request.getPassword());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(request.getRole());
 
         User savedUser = userRepository.save(user);
@@ -68,6 +71,7 @@ public class UserService {
                 savedUser.getRole()
         );
     }
+
 
 
 }
