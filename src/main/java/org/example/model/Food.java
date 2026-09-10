@@ -2,6 +2,7 @@ package org.example.model;
 
 import jakarta.persistence.*;
 
+
 @Entity
 @Table(name = "foods")
 public class Food {
@@ -21,6 +22,17 @@ public class Food {
     private String category;
 
     private boolean available;
+    @ManyToOne
+    @JoinColumn(name = "restaurant_id")
+    private Restaurant restaurant;
+    public Restaurant getRestaurant() {
+        return restaurant;
+    }
+
+    public void setRestaurant(Restaurant restaurant) {
+        this.restaurant = restaurant;
+    }
+
 
     public Long getId() {
         return id;

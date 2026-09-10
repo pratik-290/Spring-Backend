@@ -20,12 +20,12 @@ public class FoodService {
         return foodRepository.save(food);
     }
 
-    // Get All Foods
+
     public List<Food> getAllFoods() {
         return foodRepository.findAll();
     }
 
-    // Get Food By ID
+
     public Food getFoodById(Long id) {
         return foodRepository.findById(id)
                 .orElseThrow(() ->
@@ -33,8 +33,11 @@ public class FoodService {
                 );
     }
 
-    // Delete Food
+
     public void deleteFood(Long id) {
         foodRepository.deleteById(id);
+    }
+    public List<Food> getFoodsByRestaurantId(Long restaurantId) {
+        return foodRepository.findByRestaurant_Id(restaurantId);
     }
 }
