@@ -4,7 +4,6 @@ import org.example.model.Order;
 import org.example.service.OrderService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.List;
 
@@ -18,44 +17,36 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-
     @PostMapping
     public Order placeOrder() {
 
-        String username = SecurityContextHolder
+        String email = SecurityContextHolder
                 .getContext()
                 .getAuthentication()
                 .getName();
 
-        return orderService.placeOrderByUsername(username);
+        return orderService.placeOrderByEmail(email);
     }
 
     @GetMapping
     public List<Order> getOrderHistory() {
 
-        String username = SecurityContextHolder
+        String email = SecurityContextHolder
                 .getContext()
                 .getAuthentication()
                 .getName();
 
-        return orderService.getOrderHistory(username);
+        return orderService.getOrderHistory(email);
     }
 
     @GetMapping("/{id}")
     public Order getOrderById(@PathVariable Long id) {
 
-        String username = SecurityContextHolder
+        String email = SecurityContextHolder
                 .getContext()
                 .getAuthentication()
                 .getName();
 
-        return orderService.getOrderById(id, username);
-    }
-    @PutMapping("/{id}/status")
-    public Order updateOrderStatus(
-            @PathVariable Long id,
-            @RequestParam String status) {
-
-        return orderService.updateOrderStatus(id, status);
+        return orderService.getOrderById(id, email);
     }
 }

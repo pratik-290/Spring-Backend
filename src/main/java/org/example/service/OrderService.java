@@ -69,9 +69,9 @@ public class OrderService {
 
         return savedOrder;
     }
-    public Order placeOrderByUsername(String username) {
+    public Order placeOrderByEmail(String email) {
 
-        Long userId = userRepository.findByUsername(username)
+        Long userId = userRepository.findByEmail(email)
                 .orElseThrow(() ->
                         new RuntimeException("User not found")
                 )
@@ -80,10 +80,9 @@ public class OrderService {
         return placeOrder(userId);
     }
 
+    public List<Order> getOrderHistory(String email) {
 
-    public List<Order> getOrderHistory(String username) {
-
-        Long userId = userRepository.findByUsername(username)
+        Long userId = userRepository.findByEmail(email)
                 .orElseThrow(() ->
                         new RuntimeException("User not found")
                 )
@@ -92,10 +91,9 @@ public class OrderService {
         return orderRepository.findByUserId(userId);
     }
 
+    public Order getOrderById(Long id, String email) {
 
-    public Order getOrderById(Long id, String username) {
-
-        Long userId = userRepository.findByUsername(username)
+        Long userId = userRepository.findByEmail(email)
                 .orElseThrow(() ->
                         new RuntimeException("User not found")
                 )

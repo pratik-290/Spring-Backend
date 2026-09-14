@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import org.example.dto.CartResponse;
 import org.example.model.Cart;
 import org.example.service.CartService;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,22 +20,30 @@ public class CartController {
 
     @PostMapping
     public Cart addToCart(
-            @RequestParam Long userId,
             @RequestParam Long foodId,
             @RequestParam Integer quantity) {
 
-        return cartService.addToCart(userId, foodId, quantity);
-    }
-
-    @GetMapping
-    public List<Cart> getUserCart() {
-
-        String username = SecurityContextHolder
+        String email = SecurityContextHolder
                 .getContext()
                 .getAuthentication()
                 .getName();
 
-        return cartService.getUserCartByUsername(username);
+        return cartService.addToCartByEmail(
+                email,
+                foodId,
+                quantity
+        );
+    }
+
+    @GetMapping
+    public List<CartResponse> getUserCart() {
+
+        String email = SecurityContextHolder
+                .getContext()
+                .getAuthentication()
+                .getName();
+
+        return cartService.getUserCartByEmail(email);
     }
 
     @DeleteMapping("/{id}")
