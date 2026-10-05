@@ -28,10 +28,12 @@ public class UserService {
         User user = new User();
 
         user.setEmail(request.getEmail());
+
         user.setPassword(
                 passwordEncoder.encode(request.getPassword())
         );
-        user.setRole(request.getRole());
+
+        user.setRole("CUSTOMER");
 
         User savedUser = userRepository.save(user);
 
@@ -41,7 +43,6 @@ public class UserService {
                 savedUser.getRole()
         );
     }
-
     public List<UserResponse> getAllUsers() {
 
         return userRepository.findAll()
