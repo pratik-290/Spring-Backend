@@ -35,7 +35,6 @@ public class CorsConfig {
         );
 
         configuration.setAllowedHeaders(List.of("*"));
-
         configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source =
